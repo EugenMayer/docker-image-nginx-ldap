@@ -13,7 +13,8 @@ RUN echo "==> Installing dependencies..." \
     && mkdir /var/log/nginx \
 	&& mkdir /etc/nginx \
 	&& cd ~ \
-	&& git clone https://github.com/kvspb/nginx-auth-ldap.git \
+	# using custom source to fix group matching with openldap and other group related fixes
+	&& git clone https://github.com/EugenMayer/nginx-auth-ldap \
 	&& git clone https://github.com/nginx/nginx.git \
 	&& cd ~/nginx \
 	&& git checkout tags/${NGINX_VERSION} \
