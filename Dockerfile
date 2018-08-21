@@ -1,8 +1,8 @@
 FROM alpine:3.7 as nginx-build
 
-MAINTAINER Hans Rakers <h.rakers@global.leaseweb.com>
+MAINTAINER Eugen Mayer <eugen.mayer@kontextwork.de>
 
-ENV NGINX_VERSION release-1.12.2
+ENV NGINX_VERSION release-1.15.2
 
 RUN echo "==> Installing dependencies..." \
  && apk update \
@@ -50,7 +50,7 @@ RUN echo "==> Installing dependencies..." \
 
 FROM alpine:3.7
 
-MAINTAINER Hans Rakers <h.rakers@global.leaseweb.com>
+MAINTAINER Eugen Mayer <eugen.mayer@kontextwork.de>
 
 ENV DOCKERIZE_VERSION v0.6.1
 
@@ -58,6 +58,7 @@ ARG NGINX_PREFIX="/usr/local/nginx"
 
 COPY --from=nginx-build "${NGINX_PREFIX}/" "${NGINX_PREFIX}/"
 COPY --from=nginx-build "/etc/nginx/" "/etc/nginx/"
+COPY --from=nginx-build nginx ${NGINX_PREFIX}/
 
 RUN echo "==> Finishing..." \
 	&& addgroup -S nginx \
@@ -84,7 +85,7 @@ COPY nginx.vh.default.conf /etc/nginx/conf.d/default.conf
 WORKDIR ${NGINX_PREFIX}/
 
 ONBUILD RUN rm -rf html/*
-ONBUILD COPY nginx ${NGINX_PREFIX}/
+
 
 EXPOSE 80 443
 
