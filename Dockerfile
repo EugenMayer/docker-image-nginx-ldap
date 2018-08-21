@@ -58,7 +58,6 @@ ARG NGINX_PREFIX="/usr/local/nginx"
 
 COPY --from=nginx-build "${NGINX_PREFIX}/" "${NGINX_PREFIX}/"
 COPY --from=nginx-build "/etc/nginx/" "/etc/nginx/"
-COPY --from=nginx-build nginx ${NGINX_PREFIX}/
 
 RUN echo "==> Finishing..." \
 	&& addgroup -S nginx \
@@ -85,7 +84,6 @@ COPY nginx.vh.default.conf /etc/nginx/conf.d/default.conf
 WORKDIR ${NGINX_PREFIX}/
 
 ONBUILD RUN rm -rf html/*
-
 
 EXPOSE 80 443
 
